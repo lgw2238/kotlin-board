@@ -1,0 +1,35 @@
+spring:
+  profile: "dev"
+  db1:
+    datasource:
+      jdbc-url: jdbc:log4jdbc:mysql://localhost:3306/mydb?serverTimezone=UTC&characterEncoding=UTF8&autoReconnect=true&useSSL=true
+      username: myuser
+      password: mypassword
+      driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      poolName: hkr
+      idleTimeout: 100000
+      minimumIdle: 10
+      maximumPoolSize: 10
+      connectionTimeout: 9000
+      maxLifetime: 110000
+  jpa:
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+        show_sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+      generate-ddl: true
+      properties:
+      temp:
+        use_jdbc_metadata_defaults: false
+
+
+
+
+logging:
+  level:
+    com.zaxxer.hikari.HikariConfig: DEBUG
+    com.zaxxer.hikari: TRACE

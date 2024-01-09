@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 60초마다 설정 파일의 변경을 확인 하여 변경시 갱신 -->
+<configuration scan="true" scanPeriod="30 seconds">
+
+<!--    <property resource="logs/logback.properties" />-->
+    <property resource="logs/logback.properties" />
+
+    <property name="LOG_LEVEL" value="${logging.level.root}" />
+        
+    <property name="LOG_PATH" value="${log.config.path}" />
+	<property name="LOG_API_PATH" value="${log.config.path}/${log.config.environment}/api" />
+	<property name="LOG_FILE_NAME" value="${MY_FILENAME}_${log.config.filename}" />
+	<property name="LOG_JDBC_LEVEL" value="${log.jdbc.level}" />
+	
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_API_PATH}/${LOG_FILE_NAME}.log</file>
+        <encoder>
+            <pattern>%msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_API_PATH}/${LOG_FILE_NAME}.%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+	
+	<!-- jdbc console log -->
+ 	<logger name="jdbc" level="${LOG_JDBC_LEVEL}" />
+    <logger name="jdbc.connection" level="OFF" />      							<!-- 연결되어 있는 DB 커넥션 정보를 보여줌. 커넥션 관련하여 오류가 발생할 경우 체크해 볼 만하다. -->
+    <logger name="jdbc.sqlonly" level="${LOG_JDBC_LEVEL}" additivity="false" />	<!-- 수행한 쿼리 -->
+    <logger name="jdbc.sqltiming" level="${LOG_JDBC_LEVEL}" />      			<!-- 쿼리를 수행하는데 걸린 시간 -->
+    <logger name="jdbc.audit" level="OFF" />       								<!-- JDBC 호출 정보 -->
+    <logger name="jdbc.resultset" level="OFF" />      							<!-- 쿼리 수행 결과를 텍스트 형태로 보여줌 -->
+    <logger name="jdbc.resultsettable" level="${LOG_JDBC_LEVEL}" />     		<!-- 쿼리 수행 결과를 테이블 형태로 보여줌 -->
+    
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread][%X{traceId}][%X{ip}] %-5level %logger{36}.%M:%L - %msg%n</Pattern>
+        </layout>
+    </appender>
+    
+    <logger name="logging.level.com.zaxxer.hikari" level="ERROR"/>
+    <logger name="com.zaxxer.hikari.pool.PoolBase" level="ERROR"/>
+    <logger name="com.zaxxer.hikari.pool.HikariPool" level="ERROR"/>
+    <logger name="org.apache.tiles.request.locale.PostfixedApplicationResource" level="ERROR"/>
+	<logger name="logging.level.org.apache.tiles.request.locale.PostfixedApplicationResource" level="ERROR"/>
+
+	
+    <root level="${LOG_LEVEL}">
+		<appender-ref ref="CONSOLE" />
+	</root>
+    
+
+</configuration>

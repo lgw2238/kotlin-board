@@ -1,0 +1,12 @@
+
+
+POST http://localhost:8080/api/product/add
+Content-Type : application/json
+
+{
+  "prodId" = "",
+  "prodNm" = "",
+  "prodPaymentWait" = "",
+  "prodTypeCd" = "",
+  "prodSubNm" = ""
+}
